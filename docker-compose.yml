@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    redis:
+        image: redis
+        ports:
+            - '6379:6379'
+        networks:
+            - gs
+    
+    server:
+        build:
+            context: .
+            args:
+                NODE_VERSION: 14.15.4
+        ports:
+            - '5443:5443'
+        depends_on:
+            - redis
+        networks:
+            - gs
+        environment:
+            - REDIS_HOST
+            - REDIS_PORT
+            - REDIS_PASSWORD
+            - REDIS_DB
+
+networks:
+    gs:
+        driver: bridge
