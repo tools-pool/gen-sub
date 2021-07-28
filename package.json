@@ -28,25 +28,27 @@
         "cheerio": "^1.0.0-rc.10",
         "egg": "^2.6.1",
         "egg-redis": "^2.4.0",
-        "egg-scripts": "^2.6.0"
+        "egg-scripts": "^2.6.0",
+        "urlsafe-base64": "^1.0.0"
     },
     "devDependencies": {
         "@pokemonon/eslint-plugin-common": "~0.0.1",
         "@types/mocha": "^2.2.40",
         "@types/node": "^7.0.12",
         "@types/supertest": "^2.0.0",
+        "@types/urlsafe-base64": "^1.0.28",
         "autod": "^3.0.1",
         "autod-egg": "^1.1.0",
+        "commitizen": "^4.2.4",
+        "cz-conventional-changelog": "^3.3.0",
         "egg-bin": "^4.11.0",
         "egg-ci": "^1.8.0",
         "egg-mock": "^3.16.0",
         "eslint": "^7.27.0",
-        "tslib": "^1.9.0",
-        "typescript": "^4.3.5",
-        "commitizen": "^4.2.4",
-        "cz-conventional-changelog": "^3.3.0",
         "husky": "^6.0.0",
-        "standard-version": "^9.3.0"
+        "standard-version": "^9.3.0",
+        "tslib": "^1.9.0",
+        "typescript": "^4.3.5"
     },
     "engines": {
         "node": ">=8.9.0"

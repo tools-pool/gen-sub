@@ -24,6 +24,10 @@ services:
             - REDIS_PORT
             - REDIS_PASSWORD
             - REDIS_DB
+        volumes:
+            - type: bind
+              source: ./logs
+              target: /usr/local/gen-sub/logs
 
 networks:
     gs:

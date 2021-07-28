@@ -10,7 +10,7 @@ export default class CrawlService extends Service {
                 retry: 2,
             })
             .catch((err) => {
-                ctx.logger.error('请求alivin9999失败', err);
+                ctx.logger.error('请求alvin9999失败', err);
                 return { data: '' };
             });
         const html = res.data.toString();
@@ -38,19 +38,21 @@ export default class CrawlService extends Service {
 
         // 文档结构可能变动
         if (!keys.filter(k => k).length) {
-            logger.warn('alivin9999文档结构变更，请及时更新', keys);
+            logger.warn('alvin9999文档结构变更，请及时更新', keys);
         }
 
         const rows = $('tbody tr');
         const ssrUrls = rows.map((_rowIdx, row) => {
-            const ssrInfo = {};
+            const ssrInfo = {
+                group: 'alvin9999',
+            };
             $('td', row).map((idx, ele) => {
                 ssrInfo[keys[idx]] = $(ele).text().trim();
             });
             return service.ssr.genSSRUrl(ssrInfo as any);
         }).toArray();
         
-        logger.info('[ssr]爬取alivin9999数据', ssrUrls);
+        logger.info('[ssr]爬取alvin9999数据', ssrUrls);
         
         
         return ssrUrls;

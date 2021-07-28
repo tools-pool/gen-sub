@@ -1,10 +1,10 @@
 import { Service } from 'egg';
 
-import { stob } from '../utils/common';
+import { base64code } from '../utils/common';
 
 export default class HomeService extends Service {
     genSubContent(urls: string[]) {
-        return stob(urls.join('\n'));
+        return base64code(urls.join('\n'));
     }
 
     async genSSRSubContent() {

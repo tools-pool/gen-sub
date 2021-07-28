@@ -1,7 +1,7 @@
 import { Service } from 'egg';
 import { getJsonData } from '@pokemonon/knife';
 
-import { stob } from '../utils/common';
+import { base64code } from '../utils/common';
 import { Keys } from '../utils/redis';
 
 enum SSRProtocol {
@@ -39,7 +39,7 @@ interface SSROpts {
     password: string;
     encryption: SSREncryption;
     protocol?: SSRProtocol;
-    protocolparam?: string;
+    protoparam?: string;
     obfs?: SSRObfs;
     obfsparam?: string;
     remarks?: string;
@@ -73,27 +73,22 @@ export default class SSRService extends Service {
     }
 
     genSSRUrl(opts: SSROpts) {
-        // ssr://server:port:protocol:encryption:obfs:password_base64/?obfsparam=obfsparam_base64&protoparam=protoparam_base64&remarks=remarks_base64&group=group_base64
+        // https://github.com/shadowsocksrr/shadowsocks-rss/wiki/SSR-QRcode-scheme
+        // ssr://base64(host:port:protocol:method:obfs:base64pass/?obfsparam=base64param&protoparam=base64param&remarks=base64remarks&group=base64group&udpport=0&uot=0)
+        const { ctx } = this;
         const {
             server,
             port,
             password,
             encryption,
             protocol = SSRProtocol.origin,
-            // protocolparam,
             obfs = SSRObfs.plain,
-            // obfsparam,
-            // remarks,
-            // group,
         } = opts;
 
-        let originalUrl = stob(`${server}:${port}:${protocol}:${encryption}:${obfs}:${stob(password)}/?`);
-        ['protocolparam', 'obfsparam', 'remarks', 'group'].forEach(k => {
-            if (opts[k]) {
-                originalUrl += `${k}=${stob(opts[k])}&`;
-            }
-        });
-        const ssrUrl = `ssr://${stob(originalUrl)}`;
+        const originalUrl = `${server}:${port}:${protocol}:${encryption}:${obfs}:${base64code(password).replace(/=+$/, '')}/?` +
+            ['protoparam', 'obfsparam', 'remarks', 'group'].map(k => opts[k] && `${k}=${base64code(opts[k])}`).filter(i => i).join('&');
+        ctx.logger.info(`[ssr]生成连接：${originalUrl}`);
+        const ssrUrl = `ssr://${base64code(originalUrl)}`;
         return ssrUrl;
     }
 }
